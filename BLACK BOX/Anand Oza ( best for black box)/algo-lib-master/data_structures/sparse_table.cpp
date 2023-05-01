@@ -1,5 +1,10 @@
 #include <vector>
 #include <cassert>
+#include <cstdio>
+
+
+// !!!!!!!!!!!!!!!!!!!!!! i couldnt get it to work even with his github soln
+// 16th april 2023
 
 template<typename T, typename IdempotentBinaryOperation = const T&(*)(const T&, const T&)>
 struct sparse_table {

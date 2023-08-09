@@ -3,7 +3,6 @@ using namespace std;
 int n ;
 
 
-// JUST BLACK BOX WTEVER U DONT GET , NO ONE CARES
 
 
 

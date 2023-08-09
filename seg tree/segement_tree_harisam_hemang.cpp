@@ -1,7 +1,6 @@
 // from : harisam
 
 #define ll long long
-template<class T, class U>
 // T -> node, U->update.
 
 
@@ -16,6 +15,7 @@ template<class T, class U>
 // use 1 based indexing
 
 
+template<class T, class U>
 struct Lsegtree {
     vector<T>st;
     vector<U>lazy;

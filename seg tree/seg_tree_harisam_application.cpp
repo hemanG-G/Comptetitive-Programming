@@ -1,4 +1,6 @@
 // problem : https://cses.fi/problemset/task/1648
+// simple query and update
+// 99% wala seg tree prob
 
 
 //////////////////////////////my cp template (beta)////////////////////////////////

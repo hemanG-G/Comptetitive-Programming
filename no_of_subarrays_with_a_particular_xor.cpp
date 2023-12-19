@@ -31,7 +31,6 @@ typedef vector<ll> vll;
 #define sz(x) (ll)x.size()
 
 
-
 // operator overloads
 template<typename T> // cin >> vector <T>  // auto for loop input
 istream& operator>>(istream &istream, vector<T> &v)

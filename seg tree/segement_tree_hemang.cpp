@@ -1,13 +1,12 @@
 // from : harisam
-
-#define ll long long
-// T -> node, U->update.
-
+// T -> nature of node, U->nature of update.
+// 99% cases both integers
 
 // TO DO
 // 1) CHANGE COMBINE FN
 // 2) CHANGE APPLY FN
 // 3) CHANGE COMBINE UPDATE FN
+// 4) if identity element or update are not int type , custom define == operator () 
 //  use identity element or identiy update if required
 
 // NOTE:
@@ -22,15 +21,18 @@ struct Lsegtree {
     ll n;
     T identity_element;
     U identity_update;
-
-    /*
-        THIS IS HOW YOU USE IDENTIY ELEMENT AND IDENTY UPDATE
-
-        Definition of identity_element: the element I such that combine(x,I) = x
+    /*  THIS IS HOW YOU USE IDENTIY ELEMENT AND IDENTY UPDATE
+        Definition of identity_element: the element I such that combine(x,I) function = x
         for all x
-
-        Definition of identity_update: the element I such that apply(x,I) = x
+        //eg QUERY for
+        // max ::  T = -inf
+        // sum ::  T =  0 
+        Definition of identity_update: the element I such that apply(x,I) function = x
         for all x
+        // eg: UPDATE : add element to range 
+        //  U = 0  ; (add 0 , no change )
+        // eg : assign some value to range
+        //  U = -1 ; (dont assign if U =-1)
     */
 
     Lsegtree(ll n, T identity_element, U identity_update)
@@ -45,11 +47,14 @@ struct Lsegtree {
 
     T combine(T l, T r)
     {
-        // change this function as required.
+        // COMBINE TWO NODES
+        // OPERATION OF "QUERY"
         // the funcation of what to do with l and r of a node
 
-        // eg : for max
-        // ans = max(l,r);
+        // eg : for max QUERY
+        // T ans = max(l,r);
+        // T ans = min(l,r);
+        // T ans = gcd(l,r);
         T ans = (l + r);
         return ans;
     }
@@ -73,31 +78,41 @@ struct Lsegtree {
     // change the following 2 functions, and you're more or less done.
     T apply(T curr, U upd, ll tl, ll tr)
     {
-        // this is just updating values of range to upd
+        
+        
+        // APPLY UPDATE TO NODE
+        // UPDATE PART , NOT QUERY
+        
+        
+        // this is just updating values of range to upd    
+        // eg1 :  UPDATE sum ? 
+        // ans stores the new sum
         T ans = (tr - tl + 1) * upd;
-        // ans stores the sum of tl to tr
-        // so this is how you update every element in tl - tr to upd
 
-        // eg : increment range by upd:
+        // eg2 : updating increment range by upd:
         //T ans = curr + (tr - tl + 1)*upd
+        
+        // eg3:  updating to  max
+        // ans stores the max
+        // T ans = upd;
 
         return ans;
     }
 
     U combineUpdate(U old_upd, U new_upd, ll tl, ll tr)
     {
+        // UPDATE PART , NOT QUERY
         // lazy propogation in segment trees
-        // combining  the lazy update with the new update , to update together
+        // AT A NODE combining  lazy update with the new update 
 
+        // the below is case where update means assigning  new value to a range , so old upd useless
+        U ans = old_upd;
+        ans = new_upd;
+         
         //eg : if update means adding 'x' to the range
         // U ans = old_upd + new_upd
 
-
-
-        // the below is case where update means assigning value to a range
-        U ans = old_upd;
-        ans = new_upd;
-        return ans;
+        return ans;        
     }
 
 

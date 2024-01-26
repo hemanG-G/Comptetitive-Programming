@@ -77,14 +77,104 @@ using min_heap = priority_queue<T,vector<T>,greater<T> >;
 //mt19937_64 engine(seed_gen());
 //int random_number_less than 2 ^31=engine()&((1ll<<31)-1);
 
+//#include "ext/pb_ds/assoc_container.hpp"
+//#include "ext/pb_ds/tree_policy.hpp" 
+//using namespace __gnu_pbds;
+//template<class T>
+//using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update> ;
+ 
+//template<class key, class value, class cmp = std::less<key>>
+//using ordered_map = tree<key, value, cmp, rb_tree_tag, tree_order_statistics_node_update>;
+// find_by_order(k)  returns iterator to kth element starting from 0; ( it essentially gives the POINTER TO element which has k elements to its left in ordered set)
+// order_of_key(k) returns count of elements strictly smaller than k;
 
-const ll   N     =  1e7+5;
+
+const ll   N     =  1e6+5;
 const ll   INF   =  1e18;
 //ll n,m,k,t;
 //int a[N],b[N];
 // Practice is the only shortcut to improve
-void solve(int tc) {
+
+vector<int>adj[N]; 
+int dp[N]; 
+int x; 
+ 
+void dfs(int node, int par = -1, int level = 0) {
+    dp[node] = level; 
+    int cnt = 0;
+    for(auto it:adj[node]) {
+        if(adj[it].size()==1) cnt++; 
+        if(it==par) continue;
+        dfs(it, node, level+1); 
+    }
     
+}
+void DFS(int node, int par=-1)
+{
+    int cnt = 0;
+    for(auto it:adj[node]){
+        if(it == par) continue; 
+            DFS(it, node); 
+            if(adj[it].size()==1) cnt++; 
+    }
+    if(cnt>=1) x++; 
+}
+
+
+// filling n places (edges here ) such that xor is zero( bitwise approach)
+// for min -> n= odd (3) || n=even (1)
+// for max -> n numbers required to fill n places
+//11111
+//10000
+//01000
+//00100
+//00010
+//00001
+
+
+// not n2 pairs
+// hinge one node , N other leaves 
+// C1 - >all even -> mini = 1  ||| max =...
+// C2 -> atelast 1 odd -> mini = 3 || max = ...
+
+
+// for max , INCLUSION EXCLUSIOn
+// place all n-1 distinct initially
+// KEY OBS: each "LEAF SUBTREE" has same edge weight 
+// so n-1 -(all leaf nodes )+ no of "LEAF SUBTREES"(i.e atleast one leaf node) 
+// baaki sab distinct alwasys
+
+void solve(int tc) {
+  int n; 
+  cin >> n;
+  fo(i,0,n-2)
+  {
+      int u,v;
+      cin >> u >> v;
+      adj[u].pb(v);
+      adj[v].pb(u); 
+  }
+  
+  vi leaf; 
+  int root = 1;
+  fo(i,1,n) 
+    if(adj[i].size()==1) leaf.pb(i); 
+    else root = i;  // !!!!!!!LET ANY NON LEAF NODE be root  !!!!!
+  dfs(leaf[0]); // HINGE LEAF -> dist to all other leaves 
+  int mini = 1; 
+  for(auto i:leaf)
+  {
+      if(adj[i].size()==1)
+      {
+          if(dp[i]%2) 
+          {
+              mini = 3; 
+          }
+      }
+  }
+  DFS(root); // max calc 
+  // x = no of nodes such that atleast one leaf node is present( LEAF SUBTREE)
+  cout << mini << " " << n + x - leaf.size() - 1; 
 
 }
 // MISSED OBSERVATIONS
@@ -120,7 +210,7 @@ int32_t main () {
     cin.tie(0);
     cout << setprecision(12) << fixed;
     int tests = 1;
-    cin >> tests ;   // comment out if no test cases
+    // cin >> tests ;   // comment out if no test cases
     for (int tt = 1 ; tt <= tests ; tt++)
     {
         solve(tt);

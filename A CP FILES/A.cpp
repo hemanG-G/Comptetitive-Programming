@@ -1,26 +1,5 @@
-#include<iostream>
-#include<iomanip>
-#include<algorithm>
-#include<vector>
-#include<utility>
-#include<set>
-#include<unordered_set>
-#include<list>
-#include<iterator>
-#include<deque>
-#include<queue>
-#include<stack>
-#include<set>
-#include<bitset>
-#include<random>
-#include<map>
-#include<unordered_map>
-#include<stdio.h>
-#include<complex>
-#include<math.h>
-#include<cstring>
-#include<chrono>
-#include<string>
+#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 using ll = long long ;
 using ld = long double;
@@ -93,36 +72,30 @@ using min_heap = priority_queue<T,vector<T>,greater<T> >;
 
 
 
+//random number gen  
+//random_device seed_gen;
+//mt19937_64 engine(seed_gen());
+//int random_number_less than 2 ^31=engine()&((1ll<<31)-1);
+
+//#include "ext/pb_ds/assoc_container.hpp"
+//#include "ext/pb_ds/tree_policy.hpp" 
+//using namespace __gnu_pbds;
+//template<class T>
+//using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update> ;
+ 
+//template<class key, class value, class cmp = std::less<key>>
+//using ordered_map = tree<key, value, cmp, rb_tree_tag, tree_order_statistics_node_update>;
+// find_by_order(k)  returns iterator to kth element starting from 0; ( it essentially gives the POINTER TO element which has k elements to its left in ordered set)
+// order_of_key(k) returns count of elements strictly smaller than k;
+
 
 const ll   N     =  1e7+5;
 const ll   INF   =  1e18;
 //ll n,m,k,t;
 //int a[N],b[N];
 // Practice is the only shortcut to improve
-
-// odd and even 
 void solve(int tc) {
-    int n ;cin >> n;
-    if ( n%2==0){
-        string ans = "";
-        fo(i,1,(n/2)-1){
-            ans+="a";
-        }
-        ans+="b";
-        fo(i,1,n/2){
-            ans+="a";
-        }
-    }
-    else{
-        string ans = "";
-        fo(i,1,(n/2)-1){
-            ans+="a";
-        }
-        ans+="b";
-        fo(i,1,n/2){
-            ans+="a";
-        }
-    }
+    
 
 }
 // MISSED OBSERVATIONS

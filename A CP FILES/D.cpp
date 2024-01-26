@@ -6,7 +6,7 @@ using ld = long double;
 using ull = unsigned long long ;
 constexpr ll MOD = 1e9+ 7;
 const char nl = '\n';
-// #define int long long
+//#define int long long
 #define ff first
 #define ss second
 #define pii pair<int,int>
@@ -77,66 +77,25 @@ using min_heap = priority_queue<T,vector<T>,greater<T> >;
 //mt19937_64 engine(seed_gen());
 //int random_number_less than 2 ^31=engine()&((1ll<<31)-1);
 
+//#include "ext/pb_ds/assoc_container.hpp"
+//#include "ext/pb_ds/tree_policy.hpp" 
+//using namespace __gnu_pbds;
+//template<class T>
+//using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update> ;
+ 
+//template<class key, class value, class cmp = std::less<key>>
+//using ordered_map = tree<key, value, cmp, rb_tree_tag, tree_order_statistics_node_update>;
+// find_by_order(k)  returns iterator to kth element starting from 0; ( it essentially gives the POINTER TO element which has k elements to its left in ordered set)
+// order_of_key(k) returns count of elements strictly smaller than k;
 
-const ll   N     =  1e6+5;
+
+const ll   N     =  1e7+5;
 const ll   INF   =  1e18;
 //ll n,m,k,t;
-int a[N],b[N];
+//int a[N],b[N];
 // Practice is the only shortcut to improve
-     // int a[n]; 
 void solve(int tc) {
-     // cout << "hi" ;
-    int n , k  ;
-    cin >> n >> k  ; 
-     fo(i,0,n-1){
-      cin >>a[i];
-     } 
-     vector<ll> rsums;
-     vector<ll> lsums;
-      // cout << "hi";
-     k--;
-     ll curr = 0ll;
-     int l = 0 , r = 0 ; 
-     for(int i=k+1;i<=n-1;i++){
-      r+=a[i];
-      curr+=a[i];
-      rsums.pb(curr);
-     }
-     sort(rall(rsums));
-     // ll rmaxg = *(rsums.begin());
-     ll rmaxg=0;
-     if(k!=n-1){
-        rmaxg= rsums[0];
-       
-     }
-     curr = 0ll ;
-     for(int i = k-1 ; i>=0 ; i--){
-      l+=a[i];
-      curr+=a[i];
-      lsums.pb(curr);
-     }
-     sort(rall(lsums));
-     // cout << lsums  << nl;
-     // // ll lmaxg = *(lsums.begin());
-     ll  lmaxg=0; 
-     if(k!=0){
-        lmaxg= lsums[0];
-       
-     }
-     
-     rmaxg = max(0ll,rmaxg);
-     lmaxg = max(0ll,lmaxg);
-     
-     if((a[k]+rmaxg+l)>=0){
-      yes 
-      return;
-     }
-
-     if((a[k]+lmaxg+r)>=0){
-      yes 
-      return;
-     }
-     no
+    
 
 }
 // MISSED OBSERVATIONS

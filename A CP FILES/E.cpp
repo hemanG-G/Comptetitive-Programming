@@ -64,14 +64,6 @@ using min_heap = priority_queue<T,vector<T>,greater<T> >;
 //            { U  , D ,  L  , R , UL  , UR  , DL  , DR }
 
 
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  What is better ? To be born good, or to overcome your weakness with great effort ?
-// why do we fall bruce ? 
-
-
-
 //random number gen  
 //random_device seed_gen;
 //mt19937_64 engine(seed_gen());
@@ -90,80 +82,10 @@ using min_heap = priority_queue<T,vector<T>,greater<T> >;
 
 
 const ll   N     =  1e7+5;
-const ll   INF   =  1e7;
+const ll   INF   =  1e18;
 //ll n,m,k,t;
 //int a[N],b[N];
-// Practice is the only shortcut to improve
 
-vector<int> cntC;
-
-int getCnt(int l, int r) {
-    return cntC[r] - cntC[l];
-}
-
-vector< vector<int> > segs; // cnt(l,r,d) - cnt(l,r,c) for each FIXED d 
-vector<int> lst;
-
-int maxSegment( vector<int> &s) { // MAXIMUM SEGMENT OF L,R where maximum 1's and minimum subtractions (-Cnt C)
-    int mx = -INF;
-    
-    int bal = 0;
-    fo(i, 0, sz(s)-1) {
-        bal = max(0, bal + s[i]);
-        mx = max(mx, bal);
-    }
-    return mx;
-}
-
-
-// key obs ans = cnt c (0,n-1) + max(cntD(l,r) - cntC(l,r));
-
-void solve(int tc) {
-    int n ,c ;cin >> n >> c;
-    vi a(n);
-    cin >> a; 
-    
-    cntC.assign(n + 1, 0);
-    fo(i, 0, n-1)
-        cntC[i + 1] = cntC[i] + (a[i] == c);
-    
-    int possD = *max_element(a.begin(), a.end()) + 1; // ALL POSSIBLE D
-    segs.assign(possD, vector<int>());
-    lst.assign(possD, -1);
-    
-    // for each d , storing all segments ka -> 1) c count 2) d count
-    fo(i, 0, n-1) {
-        segs[a[i]].push_back(-getCnt(lst[a[i]] + 1, i)); // - Ccount
-        lst[a[i]] = i;
-        segs[a[i]].push_back(1);// + dcount
-    }
-    fo(v, 0, possD-1)
-        segs[v].push_back(-getCnt(lst[v] + 1, n)); // -Ccount
-        
-        
-        
-        
-    int ans = 0;
-    fo(v, 0, possD-1) {
-        if(v == c) continue; // covered alr
-        ans = max(ans, maxSegment(segs[v]));
-    }
-    
-    cout << getCnt(0, n) + ans << endl;
-
-
-}
-// MISSED OBSERVATIONS
-//
-
-// PROBLEM TAKEAWAYS:
-//
-//---------------------------------------------------
-// 1) Always use test cases , dont go in blind
-// 2) write everything down
-// 3) Think Common/Previously Done Techniques
-// 4) Dont prove in contest ,just apply pure intuition
-// 5) SIMPLEST OBSERVATINO IS MOSTLY THE MOST IMP
 /*
 #Source : Benq
 1. Think Greedy
@@ -172,21 +94,40 @@ void solve(int tc) {
 4. Think DP [ check constraints carefully ]
 5. Check base cases for DP and prove solution for Greedy
 6. Think Graph 
-*/
-
-/* stuff you should look for
- * int overflow, array bounds
  * special cases (n=1?)
  * do smth instead of nothing and stay organized
  * WRITE STUFF DOWN
  * DON'T GET STUCK ON ONE APPROACH
- */
+ * Always use test cases , dont go in blind
+ * Write everything down
+ * Think Common/Previously Done Techniques
+ * Dont prove in contest ,just apply pure intuition
+ * SIMPLEST OBSERVATINO IS MOSTLY THE MOST IMP
+ 
+PROBLEM TAKEAWAYS:
+
+*/
+
+void solve(int tc) {
+    
+
+    
+
+    //auto dfs= [&](vector<int> &a/*params*/){
+        
+    //};
+}
+//  What is better ? To be born good, or to overcome your weakness with great effort ?
+// why do we fall bruce ? 
+// Practice is the only shortcut to improve
+
+
 int32_t main () {
     ios_base::sync_with_stdio(false);
     cin.tie(0);
     cout << setprecision(12) << fixed;
     int tests = 1;
-    // cin >> tests ;   // comment out if no test cases
+    cin >> tests ;   // comment out if no test cases
     for (int tt = 1 ; tt <= tests ; tt++)
     {
         solve(tt);

@@ -6,7 +6,8 @@ using ld = long double;
 using ull = unsigned long long ;
 constexpr ll MOD = 1e9+ 7;
 const char nl = '\n';
-//#define int long long
+using lli = long long int;
+// #define int long long
 #define ff first
 #define ss second
 #define pii pair<int,int>
@@ -58,18 +59,62 @@ template<class T>
 using min_heap = priority_queue<T,vector<T>,greater<T> >; 
 
 
+// recursive lambda functions
+// y_combinator from @neal template https://codeforces.com/contest/1553/submission/123849801
+// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0200r0.html
+template<class Fun> class y_combinator_result {
+    Fun fun_;
+public:
+    template<class T> explicit y_combinator_result(T &&fun): fun_(std::forward<T>(fun)) {}
+    template<class ...Args> decltype(auto) operator()(Args &&...args) { return fun_(std::ref(*this), std::forward<Args>(args)...); }
+};
+template<class Fun> decltype(auto) y_combinator(Fun &&fun) { return y_combinator_result<std::decay_t<Fun>>(std::forward<Fun>(fun)); }
+
+
+ // USAGE: 
+//  auto store_result = y_combinator([&](const auto &dfss,const ll cur,const ll p)->void{ 
+//     stk.pb(cur);
+//     if(cur==dest){
+//         resp=stk;
+//         return;
+//     }
+//     for(const auto &v:e[cur])
+//         if(v.ff!=p)
+//             dfss(v.ff,cur);
+//     stk.pop_back();
+// });
+// store_result(src,-1);//function name
+
+
+// PRINT CYCLE USING DFS & STACK
+ // auto printCycle=[&](const ll src,const ll dest)->void{
+//     vi stk;
+//     vi resp;
+//     auto dfs = y_combinator([&](const auto &dfss,const ll cur,const ll p)->void{
+//         stk.pb(cur);
+//         if(cur==dest){
+//             resp=stk;
+//             return;
+//         }
+//         for(const auto &v:e[cur])
+//             if(v.ff!=p)
+//                 dfss(v.ff,cur);
+//         stk.pop_back();
+//     });
+//     dfs(src,-1);
+//     cout<<sz(resp)<<endl;
+//     for(auto x:resp)
+//         cout<<x+1<<" ";
+//     cout<<endl;
+// };
+// printCycle(src,dest);
+ 
+
+
 // int dx[] = { -1 , 1 ,  0  , 0 , -1  , -1  ,  1  , 1  };
 // int dy[] = { 0  , 0 , -1  , 1 , -1  ,  1  , -1  , 1  };
  
 //            { U  , D ,  L  , R , UL  , UR  , DL  , DR }
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  What is better ? To be born good, or to overcome your weakness with great effort ?
-// why do we fall bruce ? 
-
 
 
 //random number gen  
@@ -93,113 +138,7 @@ const ll   N     =  1e7+5;
 const ll   INF   =  1e18;
 //ll n,m,k,t;
 //int a[N],b[N];
-// Practice is the only shortcut to improve
-void solve(int tc) {
-     int n;
-    cin>>n;
-    vector<int>a(n),d(n);
-    cin>>a>>d;
- 
-    queue<array<int,4>>q; // i j k round_number
- 
-    vector<int>vis(n,inf);
- 
-    set<int>indices;
- 
-    for(int i=0;i<n;i++) {
-        indices.insert(i);
- 
-        int damage = 0;
-        if(i) damage += a[i-1];
-        if(i+1<n) damage += a[i+1];
- 
-        if(damage > d[i]) q.push({i ? i-1 : -1,i,i+1<n ? i+1 : -1,0});
-    }
- 
-    vector<int>ans(n);
-    
-    while(!q.empty()) {
-        auto [i,j,k,round_number] = q.front();
-        q.pop();
-        
-        if(vis[j] != inf) continue;
-        if(i != -1 and vis[i] < round_number) continue;
-        if(k != -1 and vis[k] < round_number) continue;
- 
-        ans[round_number]++;
- 
-        indices.erase(indices.find(j));
-        vis[j] = round_number;
- 
-        auto it = indices.lower_bound(j);
- 
-        if(it != indices.end()) {
-            int ii = -1;
-            int damage = 0;
-            int jj = *it;
-            int kk = -1;
- 
-            if(it != indices.begin()) {
-                it--;
-                ii = *it;
-                damage += a[ii];
-                it++;
-            }
- 
-            it++;
- 
-            if(it != indices.end()) {
-                kk = *it;
-                damage += a[kk];
-            }
- 
-            it--;
- 
-            if(d[jj] < damage) q.push({ii,jj,kk,round_number+1});
-        }
- 
-        if(it != indices.begin()) {
-            it--;
- 
-            int ii = -1;
-            int damage = 0;
-            int jj = *it;
-            int kk = -1;
- 
-            if(it != indices.begin()) {
-                it--;
-                ii = *it;
-                damage += a[ii];
-                it++;
-            }
- 
-            it++;
- 
-            if(it != indices.end()) {
-                kk = *it;
-                damage += a[kk];
-            }
- 
-            it--;
- 
-            if(d[jj] < damage) q.push({ii,jj,kk,round_number+1});
-        }
-    }
- 
-    for(auto u:ans) cout<<u<<' ';cout<<enl;
 
-}
-// MISSED OBSERVATIONS
-//
-
-// PROBLEM TAKEAWAYS:
-//
-//---------------------------------------------------
-// 1) Always use test cases , dont go in blind
-// 2) write everything down
-// 3) Think Common/Previously Done Techniques
-// 4) Dont prove in contest ,just apply pure intuition
-// 5) SIMPLEST OBSERVATINO IS MOSTLY THE MOST IMP
 /*
 #Source : Benq
 1. Think Greedy
@@ -208,21 +147,33 @@ void solve(int tc) {
 4. Think DP [ check constraints carefully ]
 5. Check base cases for DP and prove solution for Greedy
 6. Think Graph 
-*/
-
-/* stuff you should look for
- * int overflow, array bounds
  * special cases (n=1?)
  * do smth instead of nothing and stay organized
  * WRITE STUFF DOWN
  * DON'T GET STUCK ON ONE APPROACH
- */
+ * Always use test cases , dont go in blind
+ * Write everything down
+ * Think Common/Previously Done Techniques
+ * Dont prove in contest ,just apply pure intuition
+ * SIMPLEST OBSERVATINO IS MOSTLY THE MOST IMP
+ 
+PROBLEM TAKEAWAYS:
+
+*/
+
+
+
+//  What is better ? To be born good, or to overcome your weakness with great effort ?
+// why do we fall bruce ? 
+// Practice is the only shortcut to improve
+
+
 int32_t main () {
     ios_base::sync_with_stdio(false);
     cin.tie(0);
     cout << setprecision(12) << fixed;
     int tests = 1;
-    cin >> tests ;   // comment out if no test cases
+    // cin >> tests ;   // comment out if no test cases
     for (int tt = 1 ; tt <= tests ; tt++)
     {
         solve(tt);

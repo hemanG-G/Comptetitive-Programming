@@ -1,17 +1,39 @@
-#include <iostream>
-#include <bits/stdc++.h>
+#include<iostream>
+#include<iomanip>
+#include<algorithm>
+#include<vector>
+#include<utility>
+#include<set>
+#include<unordered_set>
+#include<list>
+#include<iterator>
+#include<deque>
+#include<queue>
+#include<stack>
+#include<set>
+#include<bitset>
+#include<random>
+#include<map>
+#include<unordered_map>
+#include<stdio.h>
+#include<complex>
+#include<math.h>
+#include<cstring>
+#include<chrono>
+#include<string>
 using namespace std;
 using ll = long long ;
 using ld = long double;
 using ull = unsigned long long ;
 constexpr ll MOD = 1e9+ 7;
 const char nl = '\n';
-//#define int long long
+#define int long long
 #define ff first
 #define ss second
 #define pii pair<int,int>
 #define pll pair<ll,ll>
 #define pb push_back
+#define eb emplace_back
 #define pob pop_back
 #define lb lower_bound
 #define ub upper_bound
@@ -58,6 +80,58 @@ template<class T>
 using min_heap = priority_queue<T,vector<T>,greater<T> >; 
 
 
+// recursive lambda functions
+// y_combinator from @neal template https://codeforces.com/contest/1553/submission/123849801
+// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0200r0.html
+//template<class Fun> class y_combinator_result {
+//     Fun fun_;
+// public:
+//     template<class T> explicit y_combinator_result(T &&fun): fun_(std::forward<T>(fun)) {}
+//     template<class ...Args> decltype(auto) operator()(Args &&...args) { return fun_(std::ref(*this), std::forward<Args>(args)...); }
+// };
+// template<class Fun> decltype(auto) y_combinator(Fun &&fun) { return y_combinator_result<std::decay_t<Fun>>(std::forward<Fun>(fun)); }
+
+
+ // USAGE: 
+//  auto store_result = y_combinator([&](const auto &dfss,const ll cur,const ll p)->void{ 
+//     stk.pb(cur);
+//     if(cur==dest){
+//         resp=stk;
+//         return;
+//     }
+//     for(const auto &v:e[cur])
+//         if(v.ff!=p)
+//             dfss(v.ff,cur);
+//     stk.pop_back();
+// });
+// store_result(src,-1);//function name
+
+
+// PRINT CYCLE USING DFS & STACK
+ // auto printCycle=[&](const ll src,const ll dest)->void{
+//     vi stk;
+//     vi resp;
+//     auto dfs = y_combinator([&](const auto &dfss,const ll cur,const ll p)->void{
+//         stk.pb(cur);
+//         if(cur==dest){
+//             resp=stk;
+//             return;
+//         }
+//         for(const auto &v:e[cur])
+//             if(v.ff!=p)
+//                 dfss(v.ff,cur);
+//         stk.pop_back();
+//     });
+//     dfs(src,-1);
+//     cout<<sz(resp)<<endl;
+//     for(auto x:resp)
+//         cout<<x+1<<" ";
+//     cout<<endl;
+// };
+// printCycle(src,dest);
+ 
+
+
 // int dx[] = { -1 , 1 ,  0  , 0 , -1  , -1  ,  1  , 1  };
 // int dy[] = { 0  , 0 , -1  , 1 , -1  ,  1  , -1  , 1  };
  
@@ -79,6 +153,113 @@ using min_heap = priority_queue<T,vector<T>,greater<T> >;
 //using ordered_map = tree<key, value, cmp, rb_tree_tag, tree_order_statistics_node_update>;
 // find_by_order(k)  returns iterator to kth element starting from 0; ( it essentially gives the POINTER TO element which has k elements to its left in ordered set)
 // order_of_key(k) returns count of elements strictly smaller than k;
+
+
+// source :ecnerwala -> easy mod opreations
+// syntax : using num = modnum<MOD>;
+//            num a;
+//            num b;
+//            a+=b;
+//            a+b;
+//            a+1e9+7;
+// template <typename T> T mod_inv_in_range(T a, T m) {
+//     // assert(0 <= a && a < m);
+//     T x = a, y = m;
+//     // coeff of a in x and y
+//     T vx = 1, vy = 0;
+//     while (x) {
+//         T k = y / x;
+//         y %= x;
+//         vy -= k * vx;
+//         std::swap(x, y);
+//         std::swap(vx, vy);
+//     }
+//     assert(y == 1);
+//     return vy < 0 ? m + vy : vy;
+// }
+
+
+// template <typename T> T mod_inv(T a, T m) {
+//     a %= m;
+//     a = a < 0 ? a + m : a;
+//     return mod_inv_in_range(a, m);
+// }
+
+// template <int MOD_> struct modnum {
+//     static constexpr int MOD = MOD_;
+//     static_assert(MOD_ > 0, "MOD must be positive");
+
+// private:
+//     int v;
+
+// public:
+
+//     modnum() : v(0) {}
+//     modnum(int64_t v_) : v(int(v_ % MOD)) { if (v < 0) v += MOD; }
+//     explicit operator int() const { return v; }
+//     friend std::ostream& operator << (std::ostream& out, const modnum& n) { return out << int(n); }
+//     friend std::istream& operator >> (std::istream& in, modnum& n) { int64_t v_; in >> v_; n = modnum(v_); return in; }
+
+//     friend bool operator == (const modnum& a, const modnum& b) { return a.v == b.v; }
+//     friend bool operator != (const modnum& a, const modnum& b) { return a.v != b.v; }
+
+//     modnum inv() const {
+//         modnum res;
+//         res.v = mod_inv_in_range(v, MOD);
+//         return res;
+//     }
+//     friend modnum inv(const modnum& m) { return m.inv(); }
+//     modnum neg() const {
+//         modnum res;
+//         res.v = v ? MOD-v : 0;
+//         return res;
+//     }
+//     friend modnum neg(const modnum& m) { return m.neg(); }
+
+//     modnum operator- () const {
+//         return neg();
+//     }
+//     modnum operator+ () const {
+//         return modnum(*this);
+//     }
+
+//     modnum& operator ++ () {
+//         v ++;
+//         if (v == MOD) v = 0;
+//         return *this;
+//     }
+//     modnum& operator -- () {
+//         if (v == 0) v = MOD;
+//         v --;
+//         return *this;
+//     }
+//     modnum& operator += (const modnum& o) {
+//         v -= MOD-o.v;
+//         v = (v < 0) ? v + MOD : v;
+//         return *this;
+//     }
+//     modnum& operator -= (const modnum& o) {
+//         v -= o.v;
+//         v = (v < 0) ? v + MOD : v;
+//         return *this;
+//     }
+//     modnum& operator *= (const modnum& o) {
+//         v = int(int64_t(v) * int64_t(o.v) % MOD);
+//         return *this;
+//     }
+//     modnum& operator /= (const modnum& o) {
+//         return *this *= o.inv();
+//     }
+
+//     friend modnum operator ++ (modnum& a, int) { modnum r = a; ++a; return r; }
+//     friend modnum operator -- (modnum& a, int) { modnum r = a; --a; return r; }
+//     friend modnum operator + (const modnum& a, const modnum& b) { return modnum(a) += b; }
+//     friend modnum operator - (const modnum& a, const modnum& b) { return modnum(a) -= b; }
+//     friend modnum operator * (const modnum& a, const modnum& b) { return modnum(a) *= b; }
+//     friend modnum operator / (const modnum& a, const modnum& b) { return modnum(a) /= b; }
+// };
+
+
 
 
 const ll   N     =  1e7+5;
@@ -104,22 +285,43 @@ const ll   INF   =  1e18;
  * Dont prove in contest ,just apply pure intuition
  * SIMPLEST OBSERVATINO IS MOSTLY THE MOST IMP
  
-PROBLEM TAKEAWAYS:
-
 */
 
+vector<vi> smallRes = {
+    {1,1},
+    {2,1,2},
+    {2,1,2,2},
+    {3,1,2,2,3},
+    {3,1,2,2,3,3},
+    {4,1,2,2,3,3,4},
+};
+ 
+
 void solve(int tc) {
-    
+    // !!!!!!!! EK TU HI NIRANKAR!!!!!!!!!!!!!
+    int n;
+    cin>>n;
+    if(n<=6){
+        const auto cur=smallRes[n-1];
+        cout<<cur[0]<<endl;
+        for(int j=1;j<=n;j++)
+            cout<<cur[j]<<" \n"[j==n];
+        return;
+    }
+ 
+    cout<<4<<endl;
+    for(int j=0;j<n;j++){
+        const int r=j%4;
+        cout<<r+1<<" \n"[j+1==n];
+    }
 
-    
-
-    //auto dfs= [&](vector<int> &a/*params*/){
+    //function<void(int,int)> dfs= [&](vector<int> &a/*params*/)->*return type*{
         
     //};
 }
-//  What is better ? To be born good, or to overcome your weakness with great effort ?
-// why do we fall bruce ? 
-// Practice is the only shortcut to improve
+//Test for your own case
+//Check for special values (1 in gcd, corner case etc...)
+
 
 
 int32_t main () {
